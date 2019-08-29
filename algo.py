@@ -21,39 +21,39 @@ hWall = """
 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
 1 1 1 1 1 1 1 1 1 1
 """
 
 vWall = """
-1 0 0 0 0 0 0 0 0 0 0 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 1 1
-1 0 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 1 1
+1 0 0 0 0 0 0 0 0 0 1
 """
 
 
-def getWorld(map):
-    height = len(map.strip().split('\n'))
-    width = len(map.strip().split('\n')[0].split(' '))
+def getWorld(world):
+    height = len(world.strip().split('\n'))
+    width = len(world.strip().split('\n')[0].split(' '))
 
-    map = map.strip().split('\n')
+    world = world.strip().split('\n')
 
-    world = []
+
+    nworld = []
     for i in range(height):
-        world.append([' '])
+        nworld.append([1])
 
-    print(len(world))
     for x in range(height):
-        world[x] = map[x].strip().split()
+        for y in range(width):
+            nworld[x].append(int(world[x].strip().split()[y]))
 
-    return world
+    return nworld
 
 
 def printWorld(world):
@@ -62,46 +62,58 @@ def printWorld(world):
 
 
 def floodFill(world, hWall, vWall):
-    x = 4
-    y = 4
+    x = 2
+    y = 2
 
     worldWidth = len(world)
     worldHeight = len(world[0])
 
-    for i in range(worldHeight):
-        world[i] = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    # for i in range(worldHeight):
+    #     world[i] = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
 
     oldChar = '-'
 
-    theStack = [(x + 1, y + x, 0), (x + 1, y, 0), (x, y + 1, 0), (x, y, 0)]
+    theStack = [(x + 1, y + 1, 0), (x + 1, y, 0), (x, y + 1, 0), (x, y, 0)]
     count = 1
     while len(theStack) > 0:
 
         x, y, val = theStack.pop()
+        print(theStack)
+        # print(x,y)
+        # print(hWall[x][y])
+        # print(hWall[x+1][y])
+        # print(vWall[x][y])
+        # print(vWall[x][y+1])
 
-        if world[x][y] != '-':
-            # Base case. If the current x, y character is not the oldChar,
-            # then do nothing.
-            continue
-        # SS += 1
+        print(worldHeight)
+        print(worldWidth)
+        if 0>x>=5 or 0>y>=5:
+            if int(world[x][y]) < val:
+                # Base case. If the current x, y character is not the oldChar,
+                # then do nothing.
+                print('continued')
+                continue
+            # SS += 1
 
         # Change the character at world[x][y] to newChar
-        world[x][y] = val
+        else:
+            world[x][y] = val
 
         if vWall[x][y] != 1:  # left
-            theStack.append((x - 1, y, count))
+            print('left')
+            theStack.append((x - 1, y, val + 1))
 
         if hWall[x][y] != 1:  # up
-            theStack.append((x, y - 1, count))
+            theStack.append((x, y - 1, val + 1))
+            print('up')
 
         if vWall[x + 1][y] != 1:  # right
-            theStack.append((x + 1, y, count))
+            theStack.append((x + 1, y, val + 1))
+            print('right')
 
         if hWall[x][y + 1] != 1:  # down
-            theStack.append((x, y + 1, count))
-
-        count += 1
-
+            theStack.append((x, y + 1, val + 1))
+            print('down')
 
 
 def traverse(map, hWall, vWall):
@@ -167,7 +179,33 @@ world = getWorld(map)
 # print(len(world[0]))
 
 hWall = getWorld(hWall)
-printWorld(hWall)
+# printWorld
+# print(hWall)
 vWall = getWorld(vWall)
+# printWorld(vWall)
+# print(vWall)
 
-floodFill(world, hWall, world)
+
+world=[[100,100,100,100,100,100],
+       [100,100,100,100,100,100],
+       [100,100,100,100,100,100],
+       [100,100,100,100,100,100],
+       [100,100,100,100,100,100],
+       [100,100,100,100,100,100]]
+
+hWall = [[1,1,1,1,1,1],
+         [1,1,1,1,1,0],
+         [0,0,0,0,0,0],
+         [0,0,0,0,0,0],
+         [0,0,0,0,0,0],
+         [0,0,0,0,0,0],
+         [1,1,1,1,1,1]]
+
+vWall = [[1,0,0,0,0,1],
+         [1,0,0,0,0,1],
+         [1,0,0,0,0,1],
+         [1,0,0,0,0,1],
+         [1,0,0,0,0,1],
+         [1,0,0,0,0,1]]
+floodFill(world, hWall, vWall)
+print(world)
