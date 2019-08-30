@@ -60,62 +60,6 @@ def printWorld(world):
     for row in world:
         print(" ".join(row))
 
-
-def floodFill(world, hWall, vWall):
-    x = 2
-    y = 2
-
-    worldWidth = len(world)
-    worldHeight = len(world[0])
-
-    # for i in range(worldHeight):
-    #     world[i] = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-
-    oldChar = '-'
-
-    theStack = [(x + 1, y + 1, 0), (x + 1, y, 0), (x, y + 1, 0), (x, y, 0)]
-    count = 1
-    while len(theStack) > 0:
-
-        x, y, val = theStack.pop()
-        print(theStack)
-        # print(x,y)
-        # print(hWall[x][y])
-        # print(hWall[x+1][y])
-        # print(vWall[x][y])
-        # print(vWall[x][y+1])
-
-        print(worldHeight)
-        print(worldWidth)
-        if 0>x>=5 or 0>y>=5:
-            if int(world[x][y]) < val:
-                # Base case. If the current x, y character is not the oldChar,
-                # then do nothing.
-                print('continued')
-                continue
-            # SS += 1
-
-        # Change the character at world[x][y] to newChar
-        else:
-            world[x][y] = val
-
-        if vWall[x][y] != 1:  # left
-            print('left')
-            theStack.append((x - 1, y, val + 1))
-
-        if hWall[x][y] != 1:  # up
-            theStack.append((x, y - 1, val + 1))
-            print('up')
-
-        if vWall[x + 1][y] != 1:  # right
-            theStack.append((x + 1, y, val + 1))
-            print('right')
-
-        if hWall[x][y + 1] != 1:  # down
-            theStack.append((x, y + 1, val + 1))
-            print('down')
-
-
 def traverse(map, hWall, vWall):
     dir = 1
 
@@ -171,17 +115,51 @@ def traverse(map, hWall, vWall):
         if (map[x][y] == '0'):
             print('end')
             break
+def floodFill(world, hWall, vWall):
+    x = 2
+    y = 2
 
+    worldWidth = len(world)
+    worldHeight = len(world[0])
 
-world = getWorld(map)
+    theStack = [(x + 1, y + 1, 0), (x + 1, y, 0), (x, y + 1, 0), (x, y, 0)]
+    while len(theStack) > 0:
+
+        x, y, val = theStack.pop()
+        print(theStack)
+
+        print(val)
+        if world[y][x] < val:
+            print('continued')
+            continue
+
+        world[y][x] = val
+
+        if vWall[y][x] != 1:  # left
+            print('left')
+            theStack.append((x - 1, y, val + 1))
+
+        if hWall[y][x] != 1:  # up
+            theStack.append((x, y - 1, val + 1))
+            print('up')
+
+        if vWall[y][x + 1] != 1:  # right
+            theStack.append((x + 1, y, val + 1))
+            print('right')
+
+        if hWall[y + 1][x] != 1:  # down
+            theStack.append((x, y + 1, val + 1))
+            print('down')
+
+# world = getWorld(map)
 # printWorld(world)
 # traverse(world, hWall, world)
 # print(len(world[0]))
 
-hWall = getWorld(hWall)
+# hWall = getWorld(hWall)
 # printWorld
 # print(hWall)
-vWall = getWorld(vWall)
+# vWall = getWorld(vWall)
 # printWorld(vWall)
 # print(vWall)
 
@@ -201,11 +179,13 @@ hWall = [[1,1,1,1,1,1],
          [0,0,0,0,0,0],
          [1,1,1,1,1,1]]
 
-vWall = [[1,0,0,0,0,1],
-         [1,0,0,0,0,1],
-         [1,0,0,0,0,1],
-         [1,0,0,0,0,1],
-         [1,0,0,0,0,1],
-         [1,0,0,0,0,1]]
+vWall = [[1,0,0,0,0,0,1],
+         [1,0,0,0,0,0,1],
+         [1,0,0,0,0,0,1],
+         [1,0,0,0,0,0,1],
+         [1,0,0,0,0,0,1],
+         [1,0,0,0,0,0,1]]
+
+
 floodFill(world, hWall, vWall)
 print(world)
