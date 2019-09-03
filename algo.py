@@ -58,7 +58,11 @@ def getWorld(world):
 
 def printWorld(world):
     for row in world:
-        print(" ".join(row))
+        rowp = ''
+        for cell in row:
+            rowp+=str(cell)+' '
+
+        print(rowp.strip())
 
 def traverse(map, hWall, vWall):
     dir = 1
@@ -126,30 +130,30 @@ def floodFill(world, hWall, vWall):
     while len(theStack) > 0:
 
         x, y, val = theStack.pop()
-        print(theStack)
+        # print(theStack)
 
-        print(val)
+        # print(val)
         if world[y][x] < val:
-            print('continued')
+            # print('continued')
             continue
 
         world[y][x] = val
 
         if vWall[y][x] != 1:  # left
-            print('left')
+            # print('left')
             theStack.append((x - 1, y, val + 1))
 
         if hWall[y][x] != 1:  # up
             theStack.append((x, y - 1, val + 1))
-            print('up')
+            # print('up')
 
         if vWall[y][x + 1] != 1:  # right
             theStack.append((x + 1, y, val + 1))
-            print('right')
+            # print('right')
 
         if hWall[y + 1][x] != 1:  # down
             theStack.append((x, y + 1, val + 1))
-            print('down')
+            # print('down')
 
 # world = getWorld(map)
 # printWorld(world)
@@ -188,4 +192,4 @@ vWall = [[1,0,0,0,0,0,1],
 
 
 floodFill(world, hWall, vWall)
-print(world)
+printWorld(world)
