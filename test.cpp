@@ -1,5 +1,5 @@
 // CPP program to demonstrate working of STL stack
-#include <iostream>
+#include<iostream>
 using namespace std; 
 class Stack
 {  
@@ -54,7 +54,9 @@ class Stack
 
 int main() {
    Stack stack;
-   stack.push({1,2,3});
+   int* a;
+   a=5;
+   stack.push(a);
    
 /*   
    int ch;
